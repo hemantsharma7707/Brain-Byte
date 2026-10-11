@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BrainByte Books — Premium digital bookstore for developers and tech professionals. Instant secure PDF delivery, cloud vault storage, and expert content." />
+    <meta name="theme-color" content="#020617" />
+
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <title>BrainByte Books — Premium Digital Books for Developers</title>
+  </head>
+  <body style="background-color:#020617;color:#f1f5f9;margin:0;" class="bg-[#020617] text-[#f1f5f9]">
+    <div id="root">
+      <div id="initial-loader" style="display:flex;align-items:center;justify-content:center;min-height:100vh;font-family:Inter,sans-serif;color:#f1f5f9;">
+        <div style="text-align:center">
+          <div style="width:48px;height:48px;border:4px solid rgba(99,102,241,0.3);border-top:4px solid #6366f1;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 16px;"></div>
+          <p style="color:#94a3b8;font-size:14px;">Loading BrainByte Books...</p>
+        </div>
+      </div>
+    </div>
+    <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+    <script>
+      function isThirdPartyError(err) {
+        var str = String(err && (err.stack || err.message || err) || '');
+        return str.includes('chrome-extension:') || str.includes('moz-extension:') || str.includes('safari-extension:');
+      }
+      window.addEventListener('error', function(e) {
+        if (isThirdPartyError(e.error || e.message)) return;
+        console.error('Window error:', e);
+        var el = document.getElementById('debug-error-box');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'debug-error-box';
+          el.style = 'position:fixed;bottom:16px;left:16px;right:16px;background:#991b1b;color:#fff;padding:16px;border-radius:12px;z-index:999999;font-family:monospace;font-size:12px;white-space:pre-wrap;box-shadow:0 10px 25px rgba(0,0,0,0.5);max-height:300px;overflow:auto;';
+          document.body.appendChild(el);
+        }
+        el.textContent = 'Client JS Error:\n' + (e.error ? (e.error.stack || e.error.message) : e.message);
+      });
+      window.addEventListener('unhandledrejection', function(e) {
+        if (isThirdPartyError(e.reason)) return;
+        console.error('Unhandled promise rejection:', e.reason);
+        var el = document.getElementById('debug-error-box');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'debug-error-box';
+          el.style = 'position:fixed;bottom:16px;left:16px;right:16px;background:#991b1b;color:#fff;padding:16px;border-radius:12px;z-index:999999;font-family:monospace;font-size:12px;white-space:pre-wrap;box-shadow:0 10px 25px rgba(0,0,0,0.5);max-height:300px;overflow:auto;';
+          document.body.appendChild(el);
+        }
+        var msg = e.reason ? (e.reason.stack || e.reason.message || String(e.reason)) : 'Unknown rejection';
+        el.textContent = (el.textContent ? el.textContent + '\n\n' : '') + 'Unhandled Promise Rejection:\n' + msg;
+      });
+    </script>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
