@@ -202,7 +202,9 @@ const verifyPayment = async (req, res, next) => {
 
     // Step 8: Send confirmation email (non-blocking)
     const user = await User.findById(order.user);
-    const clientUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const defaultBase = req.headers.host ? `${protocol}://${req.headers.host}` : '';
+    const clientUrl = (process.env.CLIENT_URL || defaultBase).replace(/\/$/, '');
     const downloadLinks = downloadTokens.map(
       (dt) => `${clientUrl}/download/${dt.token}`
     );
@@ -294,7 +296,9 @@ const handleWebhook = async (req, res, next) => {
       // Send email
       const user = await User.findById(order.user);
       if (user) {
-        const clientUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+        const protocol = req.headers['x-forwarded-proto'] || 'https';
+        const defaultBase = req.headers.host ? `${protocol}://${req.headers.host}` : '';
+        const clientUrl = (process.env.CLIENT_URL || defaultBase).replace(/\/$/, '');
         const downloadLinks = downloadTokens.map(
           (dt) => `${clientUrl}/download/${dt.token}`
         );

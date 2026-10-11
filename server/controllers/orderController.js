@@ -107,7 +107,9 @@ const regenerateDownloadToken = async (req, res, next) => {
       bookId
     );
 
-    const clientUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
+    const protocol = req.headers['x-forwarded-proto'] || 'https';
+    const defaultBase = req.headers.host ? `${protocol}://${req.headers.host}` : '';
+    const clientUrl = (process.env.CLIENT_URL || defaultBase).replace(/\/$/, '');
     res.status(200).json({
       success: true,
       data: {
