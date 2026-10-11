@@ -107,12 +107,13 @@ const regenerateDownloadToken = async (req, res, next) => {
       bookId
     );
 
+    const clientUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
     res.status(200).json({
       success: true,
       data: {
         token: downloadToken.token,
         expiresAt: downloadToken.expiresAt,
-        downloadUrl: `${process.env.CLIENT_URL}/download/${downloadToken.token}`,
+        downloadUrl: `${clientUrl}/download/${downloadToken.token}`,
       },
     });
   } catch (error) {

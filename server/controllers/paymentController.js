@@ -202,8 +202,9 @@ const verifyPayment = async (req, res, next) => {
 
     // Step 8: Send confirmation email (non-blocking)
     const user = await User.findById(order.user);
+    const clientUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
     const downloadLinks = downloadTokens.map(
-      (dt) => `${process.env.CLIENT_URL}/download/${dt.token}`
+      (dt) => `${clientUrl}/download/${dt.token}`
     );
     sendPurchaseConfirmation(user.email, user.name, order, downloadLinks)
       .then((sent) => {
@@ -293,8 +294,9 @@ const handleWebhook = async (req, res, next) => {
       // Send email
       const user = await User.findById(order.user);
       if (user) {
+        const clientUrl = (process.env.CLIENT_URL || '').replace(/\/$/, '');
         const downloadLinks = downloadTokens.map(
-          (dt) => `${process.env.CLIENT_URL}/download/${dt.token}`
+          (dt) => `${clientUrl}/download/${dt.token}`
         );
         sendPurchaseConfirmation(user.email, user.name, order, downloadLinks).catch(() => {});
       }
